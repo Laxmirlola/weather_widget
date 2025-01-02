@@ -8,6 +8,11 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import "./InfoBox.css";
+import hot_url from "./assets/summer.jpeg";
+import cold_url from "./assets/cold.jpeg";
+import rain_url from "./assets/rain.jpeg";
+
+// ...existing code...
 
 function getDate() {
   const today = new Date();
@@ -60,11 +65,6 @@ console.log(getDate());
 
 export default function InfoBox({ info }) {
   const [currentDate, setCurrentDate] = useState(getDate());
-  const hot_url = "../src/assets/hot.jpeg";
-
-  const cold_url = "../src/assets/cold.jpeg";
-
-  const rain_url = "../src/assets/rain.jpeg";
 
   const getBackgroundImage = () => {
     console.log(info);
