@@ -1,61 +1,168 @@
 import PropTypes from "prop-types";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
+import { useState } from "react";
+// import Card from "@mui/material/Card";
+// import CardContent from "@mui/material/CardContent";
+// import CardMedia from "@mui/material/CardMedia";
+// import Typography from "@mui/material/Typography";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import "./InfoBox.css";
 
+function getDate() {
+  const today = new Date();
+  const date = today.getDate();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = monthNames[today.getMonth()];
+  const year = today.getFullYear();
+
+  const hours = today.getHours();
+  const minutes = today.getMinutes();
+  const period = hours >= 12 ? "PM" : "AM";
+
+  const formattedHours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  // Add ordinal suffix to date
+  const ordinalSuffix = (n) => {
+    if (n >= 11 && n <= 13) return `${n}th`;
+    switch (n % 10) {
+      case 1:
+        return `${n}st`;
+      case 2:
+        return `${n}nd`;
+      case 3:
+        return `${n}rd`;
+      default:
+        return `${n}th`;
+    }
+  };
+
+  const formattedDate = ordinalSuffix(date);
+
+  return `${formattedDate} ${month} ${year} ${formattedHours}:${formattedMinutes}${period}`;
+}
+
+console.log(getDate());
+
 export default function InfoBox({ info }) {
-  const hot_url =
-    "https://plus.unsplash.com/premium_photo-1700124162812-1d5d29087b81?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const [currentDate, setCurrentDate] = useState(getDate());
+  const hot_url = "../src/assets/hot.jpeg";
 
-  const cold_url =
-    "https://plus.unsplash.com/premium_photo-1670604649107-a0171e5f1bd0?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const cold_url = "../src/assets/cold.jpeg";
 
-  const rain_url =
-    "https://plus.unsplash.com/premium_photo-1671229652411-4468b946b787?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D-1567306226416-28f0efdc88ce";
+  const rain_url = "../src/assets/rain.jpeg";
+
+  const getBackgroundImage = () => {
+    console.log(info);
+    if (info.humidity > 70) {
+      return rain_url;
+    } else if (info.temp > 25) {
+      return hot_url;
+    } else {
+      return cold_url;
+    }
+  };
 
   return (
-    <div className="InfoBox">
-      <div className="cardContainer">
-        <Card sx={{ maxWidth: 345 }}>
-          <CardMedia
-            sx={{ height: 140 }}
-            image={
-              info.humidity > 70
-                ? rain_url
-                : info.temp > 25
-                ? hot_url
-                : cold_url
-            }
-            title="Weather Image"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {info.city}{" "}
-              {info.humidity > 70 ? (
-                <ThunderstormIcon />
-              ) : info.temp > 25 ? (
-                <WbSunnyIcon />
-              ) : (
-                <AcUnitIcon />
-              )}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" component="div">
-              <p>Temperature: {info.temp}°C</p>
-              <p>Humidity: {info.humidity}%</p>
-              <p>Min Temp: {info.tempMin}°C</p>
-              <p>Max Temp: {info.tempMax}°C</p>
-              <p>
-                Feels like {info.feelsLike}°C and is{""}
-                <i>{info.weather} weather</i>
-              </p>
-            </Typography>
-          </CardContent>
-        </Card>
+    <div
+      className="Info"
+      style={{
+        backgroundImage: `url(${getBackgroundImage()})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        color: "#fff",
+        minHeight: "100vh",
+        padding: "2rem",
+        transition: "background-image 1s ",
+      }}
+    >
+      <div className="InfoBox">
+        <div>
+          <h1 style={{ fontSize: "2rem", fontWeight: "200" }}>
+            {info.city}
+            {info.humidity > 70 ? (
+              <ThunderstormIcon />
+            ) : info.temp > 25 ? (
+              <WbSunnyIcon />
+            ) : (
+              <AcUnitIcon />
+            )}
+          </h1>{" "}
+        </div>
+        <p style={{ fontSize: "1.5rem", fontWeight: "100" }}>{currentDate}</p>
+        <p className="temp">{info.temp}°C</p>
+        <h4 style={{ marginBottom: "0" }}>{info.weather.toUpperCase()}</h4>
+        <p style={{ marginTop: "2px" }}>Feels like {info.feelsLike}°C</p>
+      </div>
+
+      <div className="card-body">
+        <div className="card-text one">
+          <p>
+            <h5
+              style={{
+                fontWeight: "100",
+                margin: "0 0 0.2rem 0",
+                fontSize: "1.2rem",
+              }}
+            >
+              Humidity
+            </h5>
+            <div style={{ fontSize: "2.5rem" }}>{info.humidity}%</div>
+          </p>
+          <p>
+            <h5
+              style={{
+                fontWeight: "100",
+                margin: "0 0 0.2rem 0",
+                fontSize: "1.2rem",
+              }}
+            >
+              Min Temp
+            </h5>
+            <div style={{ fontSize: "2.5rem" }}>{info.tempMin}°C</div>
+          </p>
+        </div>
+        <div className="card-text two">
+          {" "}
+          <p>
+            <h5
+              style={{
+                fontWeight: "100",
+                margin: "0 0 0.2rem 0",
+                fontSize: "1.2rem",
+              }}
+            >
+              Max Temp
+            </h5>
+            <div style={{ fontSize: "2.5rem" }}>{info.tempMax}°C</div>
+          </p>
+          <p>
+            <h5
+              style={{
+                fontWeight: "100",
+                margin: "0 0 0.2rem 0",
+                fontSize: "1.2rem",
+              }}
+            >
+              Temperature
+            </h5>
+            <div style={{ fontSize: "2.5rem" }}>{info.temp}°C</div>
+          </p>
+        </div>
       </div>
     </div>
   );
