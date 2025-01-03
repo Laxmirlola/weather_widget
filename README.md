@@ -19,7 +19,7 @@ A simple and elegant Weather Widget built with **React JS** and styled using **V
 <p align="center"><img src="/src/assets/review1.jpg" width="1000">
 
 ### Mobile View
-<p align="center"><img src="/src/assets/review2.jpg" width="1000">
+<p align="center"><img src="/src/assets/review2.jpg" width="400">
 
 ## Installation
 Follow these steps to run the project locally:
