@@ -8,7 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import Alert from "@mui/material/Alert"; // Import Alert component
+import Alert from "@mui/material/Alert";
 import PropTypes from "prop-types";
 
 export default function SearchBox({ updateInfo }) {
@@ -40,7 +40,7 @@ export default function SearchBox({ updateInfo }) {
         feelsLike: currentData.main.feels_like,
         city: currentData.name,
         weather: currentData.weather[0].main,
-        forecast: forecastData.list, // Add forecast array here
+        forecast: forecastData.list,
       };
 
       return result;
@@ -55,16 +55,14 @@ export default function SearchBox({ updateInfo }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(false); // Reset error state before fetching
+    setError(false);
 
     try {
       const info = await getWeather();
       if (info) {
         updateInfo(info);
       }
-    } catch {
-      // Error handling already done in getWeather
-    }
+    } catch {}
   };
 
   return (
