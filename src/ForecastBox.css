@@ -1,0 +1,20 @@
+/* ForecastBox.css */
+.forecast-box {
+  padding: 1rem;
+  text-align: center;
+}
+
+.forecast-list {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.forecast-card {
+  background-color: #f0f8ff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 120px;
+}

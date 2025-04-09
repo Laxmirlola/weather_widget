@@ -18,31 +18,34 @@ export default function SearchBox({ updateInfo }) {
   const API_URL = "https://api.openweathermap.org/data/2.5/weather";
   const API_KEY = "36f21abfb7b19ff7c2842837019408d7";
 
-  const getWeather = async () => {
+  let getWeather = async () => {
     try {
-      const response = await fetch(
+      let currentRes = await fetch(
         `${API_URL}?q=${city}&appid=${API_KEY}&units=metric`
       );
-      const jsonResponse = await response.json();
+      let currentData = await currentRes.json();
 
-      if (!response.ok) {
-        throw new Error("No place found with that name."); // Handle non-2xx response codes
-      }
+      if (!currentRes.ok) throw new Error("City not found");
 
-      const result = {
-        temp: jsonResponse.main.temp,
-        tempMin: jsonResponse.main.temp_min,
-        tempMax: jsonResponse.main.temp_max,
-        humidity: jsonResponse.main.humidity,
-        feelsLike: jsonResponse.main.feels_like,
-        city: jsonResponse.name,
-        weather: jsonResponse.weather[0].main,
+      let forecastRes = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+      );
+      let forecastData = await forecastRes.json();
+
+      let result = {
+        temp: currentData.main.temp,
+        tempMin: currentData.main.temp_min,
+        tempMax: currentData.main.temp_max,
+        humidity: currentData.main.humidity,
+        feelsLike: currentData.main.feels_like,
+        city: currentData.name,
+        weather: currentData.weather[0].main,
+        forecast: forecastData.list, // Add forecast array here
       };
+
       return result;
-    } catch (error) {
-      setError(true);
-      console.error("Error fetching weather data:", error);
-      return null; // Indicate error for handling in handleSubmit
+    } catch (err) {
+      throw err;
     }
   };
 
